@@ -1,0 +1,22 @@
+{
+  "name": "architecture_api",
+  "version": "1.0.0",
+  "description": "Generate a template for building an api",
+  "main": "index.js",
+  "scripts": {
+    "test": "generate-api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/faadil1999/api-architecture.git"
+  },
+  "keywords": [
+    "Ff61149007"
+  ],
+  "author": "Faadil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/faadil1999/api-architecture/issues"
+  },
+  "homepage": "https://github.com/faadil1999/api-architecture#readme"
+}
