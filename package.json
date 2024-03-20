@@ -4,7 +4,8 @@
   "description": "Generate a template for building an api",
   "main": "index.js",
   "scripts": {
-    "test": "generate-api"
+    "generate-clean-archi": "node generate-clean-template.js",
+    "create-modele:": "node create-modele.js"
   },
   "repository": {
     "type": "git",
