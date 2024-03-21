@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { generateConfigContent } = require('./template/generate-config-template.js');
 
 // Function to create a file
 function createFile(fileName, content = '') {
@@ -15,7 +16,6 @@ function createDirectory(directoryName) {
 
 // Api structure
 const structure = {
-  'main.js': '// Principal code of the app',
   'src': {
     'contexts':{
         
@@ -32,8 +32,8 @@ const structure = {
         'schema.prisma': '//prisma orm for easly manage database',
         'server.ts': '//for express js',
     },
-    'config.js': '// configurations',
-    'main.js': '// main',
+    'config.ts': generateConfigContent(),
+    'main.ts': '// main',
     '.env.example': 'DATABASE_URL=file:../../../db.development.sqlite'
   }
 };
