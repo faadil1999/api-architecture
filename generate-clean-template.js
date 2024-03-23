@@ -1,6 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const { generateConfigContent } = require('./template/generate-config-template.js');
+const { generateRelationalDatabaseTemplate } = require('./template/generate-database-infrastructure-template.js');
+const { generateHttpResponseTemplate } = require('./template/generate-response.template');
+const { generateServerTemplate } =require('./template/generate-server.template.js');
+const { generateRoutesTemplate } = require('./template/generate-route-template.js');
+const { generateMainTemplate } = require('./template/generate-main-template.js');
+const { generatePrismaSchemaTemplate } = require('./template/generate-prisma-template.js');
 
 // Function to create a file
 function createFile(fileName, content = '') {
@@ -22,18 +28,21 @@ const structure = {
     },
     'infrastructure':{
         'database': {
-            'repositories': {}
+            'repositories': {},
+            'database.ts': generateRelationalDatabaseTemplate('../../config'),
+            'index.ts': "export * from './repositories'",
+            'schema.prisma': generatePrismaSchemaTemplate(),
         },
         'http': {
-
+            'index.ts': "export * from './response'",
+            'response.ts': generateHttpResponseTemplate(),
         },
-        'index.ts': '//for exporting potentials models',
-        'routes.ts': '//routes for all needed',
-        'schema.prisma': '//prisma orm for easly manage database',
-        'server.ts': '//for express js',
+        'index.ts': "/export * from './database'",
+        'routes.ts': generateRoutesTemplate(),
+        'server.ts': generateServerTemplate(),
     },
     'config.ts': generateConfigContent(),
-    'main.ts': '// main',
+    'main.ts': generateMainTemplate(),
     '.env.example': 'DATABASE_URL=file:../../../db.development.sqlite'
   }
 };
