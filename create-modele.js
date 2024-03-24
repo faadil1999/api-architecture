@@ -1,5 +1,18 @@
 const fs = require("fs");
 const path = require("path");
+const { generateMapperContent } = require('./template/model-template/generate-mapper.js');
+const { generateModelRepositoryCode } = require('./template/model-template/generate-repository-model.js');
+
+// Function to create or pre-fill a TypeScript file
+function createOrPreFillFile(filePath, content) {
+  if (fs.existsSync(filePath)) {
+      console.error(`The file "${filePath}" already exists.`);
+      return;
+  }
+  fs.writeFileSync(filePath, content);
+  console.log(`File "${filePath}" created successfully.`);
+}
+
 
 // Retrieve the folder name from command line arguments
 const folderName = process.argv[2];
@@ -109,6 +122,34 @@ function createModule(folderName) {
   const useCasesFolderPath = path.join(folderPath, "use-cases");
   fs.mkdirSync(useCasesFolderPath);
 
+
+  /******************************Infrastructure that is inside database folder********* */
+  const infrastructureDatabaseFolderPath = path.join(__dirname, "src/infrastructure/database/repositories", `${folderName}`);
+  fs.mkdirSync(infrastructureDatabaseFolderPath);
+
+  /****************************** Files Infrastructure(database)********************* */
+   // Path to the TypeScript mapper file 
+   const mapperFileRepository = path.join(
+    infrastructureDatabaseFolderPath,
+    `${folderName}.mapper.ts`
+  );
+
+  createOrPreFillFile(mapperFileRepository, generateMapperContent(folderName));
+
+  // Path to the TypeScript mapper file 
+  const repositoryFileRepository = path.join(
+    infrastructureDatabaseFolderPath,
+    `${folderName}.repository.ts`
+  );
+  fs.writeFileSync(repositoryFileRepository, generateModelRepositoryCode(folderName));
+    
+  // Path to the TypeScript index file for exporting injector and repository
+  const indexInfrastructureRepository = path.join(
+    infrastructureDatabaseFolderPath,
+    `index.ts`
+  );
+  fs.writeFileSync(indexInfrastructureRepository, `export * from './${folderName}.repository'`);
+  
   console.log(`Folder "${folderName}" created successfully in src/contexts.`);
   console.log(`Folder "domains" and its subfolders created inside.`);
   console.log(`Folder "infrastructure" and its subfolders created inside.`);
