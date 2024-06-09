@@ -17,7 +17,7 @@ export class ${entityNameCapitalized}Repository implements I${entityNameCapitali
     const new${entityNameCapitalized} = await this.database.client.${entityName}.create({
       data: ${entityCreateRaw},
       include: {
-        chef: true // Return all fields
+         // if needed
       }
     });
     return to${entityNameCapitalized}Raw(new${entityNameCapitalized});
@@ -27,7 +27,7 @@ export class ${entityNameCapitalized}Repository implements I${entityNameCapitali
     // Get all ${entityName}s
     const ${entityName}s = await this.database.client.${entityName}.findMany({
       include: {
-        chef: true // Return all fields
+         // if needed
       }
     });
     return ${entityName}s.map(to${entityNameCapitalized}Raw);
@@ -35,7 +35,7 @@ export class ${entityNameCapitalized}Repository implements I${entityNameCapitali
 
   async get${entityNameCapitalized}(id: string): Promise<${entityName} | null> {
     // Get a single ${entityName} by ID
-    const ${entityName} = await this.database.client.${entityName}.findUnique({ where: { id }, include: { chef: true } });
+    const ${entityName} = await this.database.client.${entityName}.findUnique({ where: { id } });
     return ${entityName} ? to${entityNameCapitalized}Raw(${entityName}) : null;
   }
 
@@ -56,7 +56,7 @@ export class ${entityNameCapitalized}Repository implements I${entityNameCapitali
     const ${entityName}Updated = await this.database.client.${entityName}.update({
       where: { id: ${entityUpdate}.id },
       data: ${entityUpdate},
-      include: { chef: true }
+      //include: //if needed
     });
     return to${entityNameCapitalized}Raw(${entityName}Updated);
   }

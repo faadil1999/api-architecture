@@ -1,22 +1,30 @@
 const fs = require("fs");
 const path = require("path");
-const { generateMapperContent } = require('./template/model-template/generate-mapper.js');
-const { generateModelRepositoryCode } = require('./template/model-template/generate-repository-model.js');
+const { pluralWord } = require("./helper.js");
+const {
+  generateMapperContent,
+} = require("./template/model-template/generate-mapper.js");
+const {
+  generateModelRepositoryCode,
+} = require("./template/model-template/generate-repository-model.js");
+
+const {
+  generateGetAllCase,
+} = require("./template/model-template/use-cases/generate-get-all.js");
 
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
-      console.error(`The file "${filePath}" already exists.`);
-      return;
+    console.error(`The file "${filePath}" already exists.`);
+    return;
   }
   fs.writeFileSync(filePath, content);
   console.log(`File "${filePath}" created successfully.`);
 }
 
-
 // Retrieve the folder name from command line arguments
 const folderName = process.argv[2];
-
+const entityName = folderName;
 // Function to create the module
 function createModule(folderName) {
   // Path to the src/contexts folder
@@ -62,7 +70,10 @@ function createModule(folderName) {
     errorsFolderPath,
     `${folderName}-not-found.ts`
   );
-  fs.writeFileSync(tsErrorNotFoundFile, `console.log('Error in ${folderName}-not-found.ts');`);
+  fs.writeFileSync(
+    tsErrorNotFoundFile,
+    `console.log('Error in ${folderName}-not-found.ts');`
+  );
 
   /******************************Inside Infrastucture folder************************* */
   // Path to the infrastructure folder inside the created folder
@@ -82,7 +93,10 @@ function createModule(folderName) {
     controllerFolderPath,
     `${folderName}.controller.ts`
   );
-  fs.writeFileSync(modelControllerFile, `console.log('Controller in ${folderName}.controller.ts');`);
+  fs.writeFileSync(
+    modelControllerFile,
+    `console.log('Controller in ${folderName}.controller.ts');`
+  );
 
   // Path to the TypeScript file inside controller
   const indexFile = path.join(controllerFolderPath, `index.ts`);
@@ -93,63 +107,119 @@ function createModule(folderName) {
   const injectorFile = path.join(
     infrastructureFolderPath,
     `${folderName}.injector.ts`
-  );    
-  fs.writeFileSync(injectorFile, `console.log('Injector in ${folderName}.injector.ts');`);
+  );
+  fs.writeFileSync(
+    injectorFile,
+    `console.log('Injector in ${folderName}.injector.ts');`
+  );
 
-  // Path to the TypeScript route file 
+  // Path to the TypeScript route file
   const routeFile = path.join(
     infrastructureFolderPath,
     `${folderName}.routes.ts`
   );
-  fs.writeFileSync(routeFile, `console.log('Route in ${folderName}.routes.ts');`);
+  fs.writeFileSync(
+    routeFile,
+    `console.log('Route in ${folderName}.routes.ts');`
+  );
 
   // Path to the TypeScript repository file
   const repositoryFile = path.join(
     infrastructureFolderPath,
     `i-${folderName}-repository.ts`
   );
-  fs.writeFileSync(repositoryFile, `console.log('Repository in i-${folderName}-repository.ts');`);
+  fs.writeFileSync(
+    repositoryFile,
+    `console.log('Repository in i-${folderName}-repository.ts');`
+  );
 
   // Path to the TypeScript index file for exporting injector and repository
-  const indexFileRepository = path.join(
-    infrastructureFolderPath,
-    `index.ts`
+  const indexFileRepository = path.join(infrastructureFolderPath, `index.ts`);
+  fs.writeFileSync(
+    indexFileRepository,
+    `console.log('Index in infrastructure');`
   );
-  fs.writeFileSync(indexFileRepository, `console.log('Index in infrastructure');`);
 
   /******************************Inside Use cases*********************************** */
   // Path to the use cases folder inside the created folder
   const useCasesFolderPath = path.join(folderPath, "use-cases");
   fs.mkdirSync(useCasesFolderPath);
 
+  /****************************use cases***************** */
+  /****Get All** */
+  const useCaseGetAll = path.join(
+    useCasesFolderPath,
+    `get-${pluralWord(folderName)}`
+  );
+  fs.mkdirSync(useCaseGetAll);
+  /***Files inside** */
+  const caseGetAllFile = path.join(
+    useCaseGetAll,
+    `get-${pluralWord(folderName)}.use-case.ts`
+  );
+  fs.writeFileSync(caseGetAllFile, generateGetAllCase(entityName));
+  const indexGelAllFile = path.join(useCaseGetAll, "index.ts");
+  fs.writeFileSync(
+    indexGelAllFile,
+    `export * from './get-${pluralWord(entityName)}.use-case'`
+  );
+
+  /****Get one** */
+  const useCaseGetOne = path.join(useCasesFolderPath, `get-${folderName}`);
+  fs.mkdirSync(useCaseGetOne);
+  const indexGetOneFile = path.join(useCaseGetOne, "index.ts");
+  fs.writeFileSync(
+    indexGetOneFile,
+    `export * from './get-${entityName}.use-case'`
+  );
+
+  /****Delete ***/
+  const useCaseDelete = path.join(useCasesFolderPath, `delete-${folderName}`);
+  fs.mkdirSync(useCaseDelete);
+  /***Files inside* */
+  const indexDeleteFile = path.join(useCaseDelete, "index.ts");
+  fs.writeFileSync(
+    indexDeleteFile,
+    `export * from './delete-${entityName}.use-case`
+  );
 
   /******************************Infrastructure that is inside database folder********* */
-  const infrastructureDatabaseFolderPath = path.join(__dirname, "src/infrastructure/database/repositories", `${folderName}`);
+  const infrastructureDatabaseFolderPath = path.join(
+    __dirname,
+    "src/infrastructure/database/repositories",
+    `${folderName}`
+  );
   fs.mkdirSync(infrastructureDatabaseFolderPath);
 
   /****************************** Files Infrastructure(database)********************* */
-   // Path to the TypeScript mapper file 
-   const mapperFileRepository = path.join(
+  // Path to the TypeScript mapper file
+  const mapperFileRepository = path.join(
     infrastructureDatabaseFolderPath,
     `${folderName}.mapper.ts`
   );
 
   createOrPreFillFile(mapperFileRepository, generateMapperContent(folderName));
 
-  // Path to the TypeScript mapper file 
+  // Path to the TypeScript mapper file
   const repositoryFileRepository = path.join(
     infrastructureDatabaseFolderPath,
     `${folderName}.repository.ts`
   );
-  fs.writeFileSync(repositoryFileRepository, generateModelRepositoryCode(folderName));
-    
+  fs.writeFileSync(
+    repositoryFileRepository,
+    generateModelRepositoryCode(folderName)
+  );
+
   // Path to the TypeScript index file for exporting injector and repository
   const indexInfrastructureRepository = path.join(
     infrastructureDatabaseFolderPath,
     `index.ts`
   );
-  fs.writeFileSync(indexInfrastructureRepository, `export * from './${folderName}.repository'`);
-  
+  fs.writeFileSync(
+    indexInfrastructureRepository,
+    `export * from './${folderName}.repository'`
+  );
+
   console.log(`Folder "${folderName}" created successfully in src/contexts.`);
   console.log(`Folder "domains" and its subfolders created inside.`);
   console.log(`Folder "infrastructure" and its subfolders created inside.`);

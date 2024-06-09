@@ -4,17 +4,20 @@
   "description": "Generate a template for building an api",
   "main": "index.js",
   "scripts": {
-    "generate-clean-archi": "node generate-clean-template.js",
-    "create-modele:": "node create-modele.js"
+    "f-archi-generate": "node generate-clean-template.js",
+    "f-create:modele": "node create-modele.js",
+    "f-db:generate": "prisma generate",
+    "f-db:migrate": "prisma migrate dev",
+    "f-start": "ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/faadil1999/api-architecture.git"
   },
   "keywords": [
-    "Ff61149007"
+    ""
   ],
-  "author": "Faadil",
+  "author": "Faadil T",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/faadil1999/api-architecture/issues"
@@ -38,7 +41,7 @@
     "@types/express": "^4.17.17",
     "@types/node": "^18.15.3",
     "nodemon": "^2.0.21",
-    "prisma": "^4.11.0",
+    "prisma": "^4.16.2",
     "sqlite3": "5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
