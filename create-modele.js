@@ -12,6 +12,18 @@ const {
   generateGetAllCase,
 } = require("./template/model-template/use-cases/generate-get-all.js");
 
+const {
+  generateGetOneCase,
+} = require("./template/model-template/use-cases/generate-get-one.js");
+
+const {
+  generateDeleteCase,
+} = require("./template/model-template/use-cases/generate-get-delete.js");
+
+const {
+  generateAddOne,
+} = require("./template/model-template/use-cases/generate-add-one.js");
+
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
@@ -167,6 +179,14 @@ function createModule(folderName) {
   /****Get one** */
   const useCaseGetOne = path.join(useCasesFolderPath, `get-${folderName}`);
   fs.mkdirSync(useCaseGetOne);
+
+  /***Files inside** */
+  const caseGetOneFile = path.join(
+    useCaseGetOne,
+    `get-${folderName}.use-case.ts`
+  );
+  fs.writeFileSync(caseGetOneFile, generateGetOneCase(entityName));
+
   const indexGetOneFile = path.join(useCaseGetOne, "index.ts");
   fs.writeFileSync(
     indexGetOneFile,
@@ -177,10 +197,32 @@ function createModule(folderName) {
   const useCaseDelete = path.join(useCasesFolderPath, `delete-${folderName}`);
   fs.mkdirSync(useCaseDelete);
   /***Files inside* */
+  const caseDeleteFile = path.join(
+    useCaseDelete,
+    `delete-${folderName}.use-case.ts`
+  );
+  fs.writeFileSync(caseDeleteFile, generateDeleteCase(entityName));
+
   const indexDeleteFile = path.join(useCaseDelete, "index.ts");
   fs.writeFileSync(
     indexDeleteFile,
     `export * from './delete-${entityName}.use-case`
+  );
+
+  /****Add one*** */
+  const useCaseAddOne = path.join(useCasesFolderPath, `add-${entityName}`);
+  fs.mkdirSync(useCaseAddOne);
+  /***Files inside** */
+  const caseAddOneFile = path.join(
+    useCaseAddOne,
+    `add-${entityName}.use-case.ts`
+  );
+  fs.writeFileSync(caseAddOneFile, generateAddOne(entityName));
+
+  const indexAddOneFile = path.join(useCaseAddOne, "index.ts");
+  fs.writeFileSync(
+    indexAddOneFile,
+    `export * from './add-${entityName}.use-case'`
   );
 
   /******************************Infrastructure that is inside database folder********* */
