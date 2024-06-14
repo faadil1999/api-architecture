@@ -24,6 +24,14 @@ const {
   generateAddOne,
 } = require("./template/model-template/use-cases/generate-add-one.js");
 
+const {
+  generateType,
+} = require("./template/model-template/domains/type/generate-type-model.js");
+
+const {
+  generateController,
+} = require("./template/model-template/controller/generate-controller.js");
+
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
@@ -68,10 +76,22 @@ function createModule(folderName) {
 
   // Create the domains folder
   fs.mkdirSync(domainsFolderPath);
+  const indexFileDomaine = path.join(domainsFolderPath, "index.ts");
+  fs.writeFileSync(
+    indexFileDomaine,
+    `export * from './errors';
+export * from './types';
+    `
+  );
 
   // Path to the types folder inside the domains folder
   const typesFolderPath = path.join(domainsFolderPath, "types");
   fs.mkdirSync(typesFolderPath);
+  const modelType = path.join(typesFolderPath, `${entityName}.ts`);
+  fs.writeFileSync(modelType, generateType(entityName));
+
+  const indexType = path.join(typesFolderPath, "index.ts");
+  fs.writeFileSync(indexType, `export * from './${entityName}'`);
 
   // Path to the errors folder inside the domains folder
   const errorsFolderPath = path.join(domainsFolderPath, "errors");
@@ -105,14 +125,11 @@ function createModule(folderName) {
     controllerFolderPath,
     `${folderName}.controller.ts`
   );
-  fs.writeFileSync(
-    modelControllerFile,
-    `console.log('Controller in ${folderName}.controller.ts');`
-  );
+  fs.writeFileSync(modelControllerFile, generateController(entityName));
 
   // Path to the TypeScript file inside controller
   const indexFile = path.join(controllerFolderPath, `index.ts`);
-  fs.writeFileSync(indexFile, `console.log('Index in controller');`);
+  fs.writeFileSync(indexFile, `export * from './${entityName}.controller'`);
   /*******Inside Controller (end)**** */
 
   // Path to the TypeScript injector file
