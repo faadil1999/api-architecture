@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "f-archi-generate": "node generate-clean-template.js",
-    "f-create:modele": "node create-modele.js",
+    "f-create:model": "node create-modele.js",
     "f-db:generate": "prisma generate",
     "f-db:migrate": "prisma migrate dev",
     "f-start": "ts-node src/main.ts"
