@@ -56,8 +56,8 @@ const structure = {
     },
     "config.ts": generateConfigContent(),
     "main.ts": generateMainTemplate(),
-    ".env.example": "DATABASE_URL=file:../../../db.development.sqlite",
   },
+  ".env.example": "DATABASE_URL=file:../../../db.development.sqlite",
 };
 
 // File structure to create
