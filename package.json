@@ -17,6 +17,9 @@
   "keywords": [
     ""
   ],
+  "prisma": {
+    "schema": "src/infrastructure/database/schema.prisma"
+  },
   "author": "Faadil T",
   "license": "ISC",
   "bugs": {
