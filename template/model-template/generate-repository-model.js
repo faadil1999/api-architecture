@@ -1,9 +1,14 @@
-const { capitalizeFirstLetter } = require('../../helper.js');
+const { capitalizeFirstLetter } = require("../../helper.js");
 
-function generateModelRepositoryCode(entityName, entityCreateRaw, entityRaw, entityUpdate) {
-    const entityNameCapitalized = capitalizeFirstLetter(entityName);
+function generateModelRepositoryCode(
+  entityName,
+  entityCreateRaw,
+  entityRaw,
+  entityUpdate
+) {
+  const entityNameCapitalized = capitalizeFirstLetter(entityName);
 
-    return ` 
+  return ` 
     import { ${entityName}, ${entityNameCapitalized}Update, I${entityNameCapitalized}Repository,  ${entityNameCapitalized}NotFoundError, ${entityNameCapitalized}Raw, } from '../../../../contexts/recipe/domains/types';
     import { RelationalDatabase } from '../../database';
     import { to${entityNameCapitalized}Raw } from './${entityName}.mapper';
@@ -64,5 +69,5 @@ export class ${entityNameCapitalized}Repository implements I${entityNameCapitali
 }
 
 module.exports = {
-    generateModelRepositoryCode
-  }
+  generateModelRepositoryCode,
+};
