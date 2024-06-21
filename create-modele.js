@@ -65,7 +65,9 @@ function createModule(folderName) {
   const tsFilePath = path.join(folderPath, `index.ts`);
 
   // Content of the JavaScript file
-  const tsFileContent = `console.log('Script in ${folderName}.js');`;
+  const tsFileContent = `
+  export * from './infrastructure'
+  `;
 
   // Create the TypeScript file
   fs.writeFileSync(tsFilePath, tsFileContent);
@@ -174,6 +176,16 @@ export * from './types';
   const useCasesFolderPath = path.join(folderPath, "use-cases");
   fs.mkdirSync(useCasesFolderPath);
 
+  /*** Index file for use case */
+  const indexUseCase = path.join(useCasesFolderPath, "index.ts");
+  fs.writeFileSync(
+    indexUseCase,
+    `export * from './get-${pluralWord(entityName)}'
+     export * from './get-${entityName}'
+     export * from './add-${entityName}'
+     export * from './delete-${entityName}'
+    `
+  );
   /****************************use cases***************** */
   /****Get All** */
   const useCaseGetAll = path.join(
