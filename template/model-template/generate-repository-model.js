@@ -9,7 +9,8 @@ function generateModelRepositoryCode(
   const entityNameCapitalized = capitalizeFirstLetter(entityName);
 
   return ` 
-    import { ${entityName}, ${entityNameCapitalized}Update, I${entityNameCapitalized}Repository,  ${entityNameCapitalized}NotFoundError, ${entityNameCapitalized}Raw, } from '../../../../contexts/recipe/domains/types';
+    import { ${entityName}, ${entityNameCapitalized}CreateRaw, I${entityNameCapitalized}Repository,  ${entityNameCapitalized}NotFoundError, ${entityNameCapitalized}Raw, } from '../../../../contexts/${entityName}';
+    import { ${entityNameCapitalized} } from '../../../../contexts/${entityName}/domains/types';
     import { RelationalDatabase } from '../../database';
     import { to${entityNameCapitalized}Raw } from './${entityName}.mapper';
     import { Prisma } from '@prisma/client';

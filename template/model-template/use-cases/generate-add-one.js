@@ -17,7 +17,7 @@ export class Add${capitalizeFirstLetter(entityName)}UseCase {
 
   async execute (${entityName}: ${capitalizeFirstLetter(
     entityName
-  )}Create): Promise<void> {
+  )}Create): Promise<${capitalizeFirstLetter(entityName)}> {
     return this.${entityName}Repository.add${capitalizeFirstLetter(
     entityName
   )}(${entityName});

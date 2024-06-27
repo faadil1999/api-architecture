@@ -32,6 +32,18 @@ const {
   generateController,
 } = require("./template/model-template/controller/generate-controller.js");
 
+const {
+  generateRepositoryControllerModel,
+} = require("./template/model-template/generate-repository-controller-model.js");
+
+const {
+  generateInjectorModel,
+} = require("./template/model-template/generate-injector-model.js");
+
+const {
+  generateRouteModel,
+} = require("./template/model-template/generate-routes-model.js");
+
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
@@ -81,7 +93,8 @@ function createModule(folderName) {
   const indexFileDomaine = path.join(domainsFolderPath, "index.ts");
   fs.writeFileSync(
     indexFileDomaine,
-    `export * from './errors';
+    `
+export * from './errors';
 export * from './types';
     `
   );
@@ -139,20 +152,14 @@ export * from './types';
     infrastructureFolderPath,
     `${folderName}.injector.ts`
   );
-  fs.writeFileSync(
-    injectorFile,
-    `console.log('Injector in ${folderName}.injector.ts');`
-  );
+  fs.writeFileSync(injectorFile, generateInjectorModel(entityName));
 
   // Path to the TypeScript route file
   const routeFile = path.join(
     infrastructureFolderPath,
     `${folderName}.routes.ts`
   );
-  fs.writeFileSync(
-    routeFile,
-    `console.log('Route in ${folderName}.routes.ts');`
-  );
+  fs.writeFileSync(routeFile, generateRouteModel(entityName));
 
   // Path to the TypeScript repository file
   const repositoryFile = path.join(
@@ -161,14 +168,17 @@ export * from './types';
   );
   fs.writeFileSync(
     repositoryFile,
-    `console.log('Repository in i-${folderName}-repository.ts');`
+    generateRepositoryControllerModel(entityName)
   );
 
   // Path to the TypeScript index file for exporting injector and repository
   const indexFileRepository = path.join(infrastructureFolderPath, `index.ts`);
   fs.writeFileSync(
     indexFileRepository,
-    `console.log('Index in infrastructure');`
+    `
+    export * from './${entityName}.injector'
+    export * from './i-${entityName}-repository'
+    `
   );
 
   /******************************Inside Use cases*********************************** */
@@ -235,7 +245,7 @@ export * from './types';
   const indexDeleteFile = path.join(useCaseDelete, "index.ts");
   fs.writeFileSync(
     indexDeleteFile,
-    `export * from './delete-${entityName}.use-case`
+    `export * from './delete-${entityName}.use-case'`
   );
 
   /****Add one*** */
