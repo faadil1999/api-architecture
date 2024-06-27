@@ -8,7 +8,7 @@ import { I${capitalizeFirstLetter(
     entityName
   )}Repository } from '../../infrastructure'
 
-  export class Get${capitalizeFirstLetter(entityName)}UseCase {
+  export class Get${pluralWord(capitalizeFirstLetter(entityName))}UseCase {
       constructor(private ${capitalizeFirstLetter(
         entityName
       )}Repository: I${capitalizeFirstLetter(entityName)}Repository)
@@ -18,7 +18,7 @@ import { I${capitalizeFirstLetter(
       async execute(): Promise<${capitalizeFirstLetter(entityName)}[]> {
          return this.${capitalizeFirstLetter(
            entityName
-         )}Repository.getAll.${pluralWord(entityName)}
+         )}Repository.getAll${pluralWord(capitalizeFirstLetter(entityName))}
       }
     }
 

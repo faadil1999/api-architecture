@@ -12,7 +12,7 @@ export type ${capitalizeFirstLetter(entityName)} = {
 
 export type ${capitalizeFirstLetter(
     entityName
-  )}Create = Prisma.${capitalizeFirstLetter(entityName)}CreateInput
+  )}Create = Omit<${capitalizeFirstLetter(entityName)}, 'id'>
     `;
 }
 
