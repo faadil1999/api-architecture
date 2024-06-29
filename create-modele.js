@@ -44,6 +44,14 @@ const {
   generateRouteModel,
 } = require("./template/model-template/generate-routes-model.js");
 
+const {
+  generateNotFoundError,
+} = require("./template/model-template/domains/errors/generate-not-found-error.js");
+
+const {
+  generateDomainError,
+} = require("./template/model-template/domains/errors/generate-domain-error.js");
+
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
@@ -77,9 +85,7 @@ function createModule(folderName) {
   const tsFilePath = path.join(folderPath, `index.ts`);
 
   // Content of the JavaScript file
-  const tsFileContent = `
-  export * from './infrastructure'
-  `;
+  const tsFileContent = `export * from './infrastructure'`;
 
   // Create the TypeScript file
   fs.writeFileSync(tsFilePath, tsFileContent);
@@ -93,8 +99,7 @@ function createModule(folderName) {
   const indexFileDomaine = path.join(domainsFolderPath, "index.ts");
   fs.writeFileSync(
     indexFileDomaine,
-    `
-export * from './errors';
+    `export * from './errors';
 export * from './types';
     `
   );
@@ -113,13 +118,23 @@ export * from './types';
   fs.mkdirSync(errorsFolderPath);
 
   // Path to the TypeScript file inside domains/errors
+
+  //Domaine error
+  const domaineError = path.join(errorsFolderPath, "domain.error.ts");
+  fs.writeFileSync(domaineError, generateDomainError());
+
+  //Not found file
   const tsErrorNotFoundFile = path.join(
     errorsFolderPath,
-    `${folderName}-not-found.ts`
+    `${folderName}-not-found.error.ts`
   );
+  fs.writeFileSync(tsErrorNotFoundFile, generateNotFoundError(entityName));
+
+  const indexError = path.join(errorsFolderPath, "index.ts");
   fs.writeFileSync(
-    tsErrorNotFoundFile,
-    `console.log('Error in ${folderName}-not-found.ts');`
+    indexError,
+    `export * from './domain.error'
+    export * from './${entityName}-not-found.error'`
   );
 
   /******************************Inside Infrastucture folder************************* */
@@ -175,9 +190,8 @@ export * from './types';
   const indexFileRepository = path.join(infrastructureFolderPath, `index.ts`);
   fs.writeFileSync(
     indexFileRepository,
-    `
-    export * from './${entityName}.injector'
-    export * from './i-${entityName}-repository'
+    `export * from './${entityName}.injector'
+export * from './i-${entityName}-repository'
     `
   );
 
@@ -245,7 +259,7 @@ export * from './types';
   const indexDeleteFile = path.join(useCaseDelete, "index.ts");
   fs.writeFileSync(
     indexDeleteFile,
-    `export * from './delete-${entityName}.use-case'`
+    `export * from './delete-${entityName}.use-case'  `
   );
 
   /****Add one*** */
