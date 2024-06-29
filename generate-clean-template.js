@@ -50,7 +50,7 @@ const structure = {
         "index.ts": "export * from './response'",
         "response.ts": generateHttpResponseTemplate(),
       },
-      "index.ts": "/export * from './database'",
+      "index.ts": "export * from './database'",
       "routes.ts": generateRoutesTemplate(),
       "server.ts": generateServerTemplate(),
     },
@@ -88,3 +88,18 @@ exec("npm install prisma --save-dev", (error, stdout, stderr) => {
   }
   console.log(`Output: ${stdout}`);
 });
+const red = "\x1b[31m";
+const reset = "\x1b[0m";
+
+console.log(`${red}
+  █████       ▒▄▄▄       ██▀███  ▄████▄   ██░ ██  ██▓
+▓██   ▒       ▒████▄    ▓██ ▒ ██▒██▀ ▀█  ▓██░ ██▒▓██▒
+▒████ ░       ▒██  ▀█▄  ▓██ ░▄█ ▒▓█    ▄ ▒██▀▀██░▒██▒
+░▓█▒  ░ ▄▄▄▄  ░██▄▄▄▄██ ▒██▀▀█▄ ▒▓▓▄ ▄██▒░▓█ ░██ ░██░
+░▒█░           ▓█   ▓██▒░██▓ ▒██▒ ▓███▀ ░░▓█▒░██▓░██░
+ ▒ ░           ▒▒   ▓▒█░░ ▒▓ ░▒▓░ ░▒ ▒  ░ ▒ ░░▒░▒░▓  
+ ░              ▒   ▒▒ ░  ░▒ ░ ▒░ ░  ▒    ▒ ░▒░ ░ ▒ ░
+ ░ ░            ░   ▒     ░░   ░░         ░  ░░ ░ ▒ ░
+                 ░  ░   ░    ░ ░       ░  ░  ░ ░  
+                                 ░
+${reset}`);

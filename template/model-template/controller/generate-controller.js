@@ -11,6 +11,9 @@ import {Add${capitalizeFirstLetter(
   )}UseCase, Get${capitalizeFirstLetter(entityName)}UseCase, Get${pluralWord(
     capitalizeFirstLetter(entityName)
   )}UseCase } from '../../use-cases';
+import { ${capitalizeFirstLetter(
+    entityName
+  )}NotFoundError } from '../../domains'
 import { internal, notFound } from '../../../../infrastructure/http';
   
 /**
@@ -37,7 +40,7 @@ import { internal, notFound } from '../../../../infrastructure/http';
 */
 
 export class ${capitalizeFirstLetter(entityName)}Controller {
-    constructor(
+  constructor(
     private readonly get${capitalizeFirstLetter(
       pluralWord(entityName)
     )}UseCase: Get${capitalizeFirstLetter(pluralWord(entityName))}UseCase,
@@ -64,9 +67,7 @@ export class ${capitalizeFirstLetter(entityName)}Controller {
   }
 
   //Add element
-  async add${capitalizeFirstLetter(
-    pluralWord(entityName)
-  )}(req: Request, res: Response) {
+  async add${capitalizeFirstLetter(entityName)}(req: Request, res: Response) {
     // Add validation
 
     const ${entityName} = await this.add${capitalizeFirstLetter(
