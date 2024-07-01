@@ -85,6 +85,16 @@ export class ${capitalizeFirstLetter(entityName)}Controller {
     res.status(200).json(${entityName})
   }
 
+  //Update element
+  async update${capitalizeFirstLetter(
+    entityName
+  )}(req: Request, res: Response) {
+    const ${entityName} = await this.update${capitalizeFirstLetter(
+    entityName
+  )}UseCase.execute(req.params.id, req.body)
+    res.status(200).json(${entityName})
+  }
+
   //Delete element
   async delete${capitalizeFirstLetter(
     entityName
