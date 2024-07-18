@@ -13,6 +13,10 @@ export type ${capitalizeFirstLetter(entityName)} = {
 export type ${capitalizeFirstLetter(
     entityName
   )}Create = Omit<${capitalizeFirstLetter(entityName)}, 'id'>
+
+export type ${capitalizeFirstLetter(
+    entityName
+  )}Update = Omit<${capitalizeFirstLetter(entityName)}, '${entityName}'>  
     `;
 }
 

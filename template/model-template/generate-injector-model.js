@@ -6,7 +6,7 @@ function generateInjectorModel(entityName) {
   return `
 import { Router } from 'express'
 import { ${entityNameCapitalized}Repository, RelationalDatabase } from '../../../infrastructure/database'
-import { Add${entityNameCapitalized}UseCase, Get${entityNameCapitalized}UseCase, Delete${entityNameCapitalized}UseCase, Get${pluralWord(
+import { Add${entityNameCapitalized}UseCase, Get${entityNameCapitalized}UseCase, Update${entityNameCapitalized}UseCase, Delete${entityNameCapitalized}UseCase, Get${pluralWord(
     entityNameCapitalized
   )}UseCase } from '../use-cases'
 import { ${entityName}Routes } from './${entityName}.routes'
@@ -27,12 +27,14 @@ export const ${entityName}Injector = (externalDependencies: ${entityNameCapitali
         const add${entityNameCapitalized}UseCase = new Add${entityNameCapitalized}UseCase(${entityName}Repository)
         const get${entityNameCapitalized}UseCase = new Get${entityNameCapitalized}UseCase(${entityName}Repository)
         const delete${entityNameCapitalized}UseCase = new Delete${entityNameCapitalized}UseCase(${entityName}Repository)
+        const update${entityNameCapitalized}UseCase = new Update${entityNameCapitalized}UseCase(${entityName}Repository)
 
         const ${entityName}Controller = new ${entityNameCapitalized}Controller(
             get${pluralWord(entityNameCapitalized)}UseCase,
             add${entityNameCapitalized}UseCase,
             get${entityNameCapitalized}UseCase,
-            delete${entityNameCapitalized}UseCase,
+            update${entityNameCapitalized}UseCase,
+            delete${entityNameCapitalized}UseCase
         )
 
         return ${entityName}Routes(${entityName}Controller);

@@ -52,6 +52,9 @@ const {
   generateDomainError,
 } = require("./template/model-template/domains/errors/generate-domain-error.js");
 
+const {
+  generateUpdateCase,
+} = require("./template/model-template/use-cases/generate-update.js");
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
@@ -207,6 +210,7 @@ export * from './i-${entityName}-repository'
     `export * from './get-${pluralWord(entityName)}'
      export * from './get-${entityName}'
      export * from './add-${entityName}'
+     export * from './update-${entityName}'
      export * from './delete-${entityName}'
     `
   );
@@ -278,6 +282,22 @@ export * from './i-${entityName}-repository'
     `export * from './add-${entityName}.use-case'`
   );
 
+  /****Update one*** */
+  const useCaseUpdate = path.join(useCasesFolderPath, `update-${entityName}`);
+  fs.mkdirSync(useCaseUpdate);
+  /***Files inside** */
+  const caseUpdateOneFile = path.join(
+    useCaseUpdate,
+    `update-${entityName}.use-case.ts`
+  );
+  fs.writeFileSync(caseUpdateOneFile, generateUpdateCase(entityName));
+
+  const indexUpdateOneFile = path.join(useCaseUpdate, "index.ts");
+  fs.writeFileSync(
+    indexUpdateOneFile,
+    `export * from './update-${entityName}.use-case'`
+  );
+
   /******************************Infrastructure that is inside database folder********* */
   const infrastructureDatabaseFolderPath = path.join(
     __dirname,
@@ -285,6 +305,11 @@ export * from './i-${entityName}-repository'
     `${folderName}`
   );
   fs.mkdirSync(infrastructureDatabaseFolderPath);
+
+  // const infrastructureIndexFile = path.join(infrastructureDatabaseFolderPath,"index.ts")
+  // fs.writeFileSync(infrastructureIndexFile,
+  //   ``
+  // )
 
   /****************************** Files Infrastructure(database)********************* */
   // Path to the TypeScript mapper file

@@ -3,7 +3,7 @@ const { pluralWord } = require("../../../helper");
 
 function generateGetAllCase(entityName) {
   return `
-import { ${capitalizeFirstLetter(entityName)} } from '../../domaines/types'
+import { ${capitalizeFirstLetter(entityName)} } from '../../domains/types'
 import { I${capitalizeFirstLetter(
     entityName
   )}Repository } from '../../infrastructure'
@@ -18,7 +18,7 @@ import { I${capitalizeFirstLetter(
       async execute(): Promise<${capitalizeFirstLetter(entityName)}[]> {
          return this.${capitalizeFirstLetter(
            entityName
-         )}Repository.getAll${pluralWord(capitalizeFirstLetter(entityName))}
+         )}Repository.getAll${pluralWord(capitalizeFirstLetter(entityName))}()
       }
     }
 
