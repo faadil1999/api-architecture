@@ -53,6 +53,9 @@ export class ${capitalizeFirstLetter(entityName)}Controller {
     private readonly delete${capitalizeFirstLetter(
       entityName
     )}UseCase: Delete${capitalizeFirstLetter(entityName)}UseCase,
+    private readonly update${capitalizeFirstLetter(
+      entityName
+    )}UseCase: Update${capitalizeFirstLetter(entityName)}UseCase,
 
   ) { }
 
@@ -82,6 +85,16 @@ export class ${capitalizeFirstLetter(entityName)}Controller {
     const ${entityName} = await this.get${capitalizeFirstLetter(
     entityName
   )}UseCase.execute(req.params.id)
+    res.status(200).json(${entityName})
+  }
+
+  //Update element
+  async update${capitalizeFirstLetter(
+    entityName
+  )}(req: Request, res: Response) {
+    const ${entityName} = await this.update${capitalizeFirstLetter(
+    entityName
+  )}UseCase.execute(req.params.id, req.body)
     res.status(200).json(${entityName})
   }
 

@@ -8,7 +8,7 @@
     "f-create:model": "node create-modele.js",
     "f-db:generate": "prisma generate",
     "f-db:migrate": "prisma migrate dev",
-    "f-start": "ts-node src/main.ts"
+    "f-start": "nodemon -e js,ts -x ts-node src/main.ts"
   },
   "repository": {
     "type": "git",

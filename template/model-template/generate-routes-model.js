@@ -5,7 +5,7 @@ function generateRouteModel(entityName) {
   const entityNameCapitalized = capitalizeFirstLetter(entityName);
   return `
     import { Router } from 'express'
-    import { ${entityNameCapitalized}Controller } form './controller'
+    import { ${entityNameCapitalized}Controller } from './controller'
 
     export function ${entityName}Routes(controller: ${entityNameCapitalized}Controller): Router {
     const router = Router()
@@ -15,6 +15,7 @@ function generateRouteModel(entityName) {
     router.post('/', controller.add${entityNameCapitalized}.bind(controller))
     router.get('/:id', controller.get${entityNameCapitalized}.bind(controller))
     router.delete('/:id', controller.delete${entityNameCapitalized}.bind(controller))
+    router.put('/:id', controller.update${entityNameCapitalized}.bind(controller))
     return router
     }
     `;

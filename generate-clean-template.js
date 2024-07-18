@@ -43,7 +43,8 @@ const structure = {
       database: {
         repositories: {},
         "database.ts": generateRelationalDatabaseTemplate("../../config"),
-        "index.ts": "export * from './repositories'",
+        "index.ts": `export * from './repositories';
+        export * from "./database";`,
         "schema.prisma": generatePrismaSchemaTemplate(),
       },
       http: {
