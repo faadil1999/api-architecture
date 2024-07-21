@@ -10,6 +10,8 @@ import {Add${capitalizeFirstLetter(
     entityName
   )}UseCase, Get${capitalizeFirstLetter(entityName)}UseCase, Get${pluralWord(
     capitalizeFirstLetter(entityName)
+  )}UseCase, Update${capitalizeFirstLetter(
+    entityName
   )}UseCase } from '../../use-cases';
 import { ${capitalizeFirstLetter(
     entityName
@@ -50,13 +52,13 @@ export class ${capitalizeFirstLetter(entityName)}Controller {
     private readonly get${capitalizeFirstLetter(
       entityName
     )}UseCase: Get${capitalizeFirstLetter(entityName)}UseCase,
-    private readonly delete${capitalizeFirstLetter(
-      entityName
-    )}UseCase: Delete${capitalizeFirstLetter(entityName)}UseCase,
     private readonly update${capitalizeFirstLetter(
       entityName
     )}UseCase: Update${capitalizeFirstLetter(entityName)}UseCase,
-
+    private readonly delete${capitalizeFirstLetter(
+      entityName
+    )}UseCase: Delete${capitalizeFirstLetter(entityName)}UseCase,
+ 
   ) { }
 
   //Get all elements
