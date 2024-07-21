@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { pluralWord } = require("./helper.js");
+const { pluralWord, modifyIndexTs } = require("./helper.js");
 const {
   generateMapperContent,
 } = require("./template/model-template/generate-mapper.js");
@@ -338,6 +338,11 @@ export * from './i-${entityName}-repository'
   fs.writeFileSync(
     indexInfrastructureRepository,
     `export * from './${folderName}.repository'`
+  );
+
+  modifyIndexTs(
+    "src/infrastructure/database/repositories",
+    `export * from './${entityName}'`
   );
 
   console.log(`Folder "${folderName}" created successfully in src/contexts.`);
