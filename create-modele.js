@@ -1,6 +1,15 @@
 const fs = require("fs");
 const path = require("path");
-const { pluralWord, modifyIndexTs, replaceExternalDependencies, capitalizeFirstLetter } = require("./helper.js");
+const { 
+        pluralWord, 
+        modifyIndexTs, 
+        replaceExternalDependencies, 
+        capitalizeFirstLetter, 
+        addPrismaModel, 
+        succesMessageConsole, 
+        errorMessageConsole, 
+        warningMessageConsole 
+      } = require("./helper.js");
 const {
   generateMapperContent,
 } = require("./template/model-template/generate-mapper.js");
@@ -55,6 +64,7 @@ const {
 const {
   generateUpdateCase,
 } = require("./template/model-template/use-cases/generate-update.js");
+
 // Function to create or pre-fill a TypeScript file
 function createOrPreFillFile(filePath, content) {
   if (fs.existsSync(filePath)) {
@@ -70,6 +80,11 @@ const folderName = process.argv[2];
 const entityName = folderName;
 // Function to create the module
 function createModule(folderName) {
+  // Check if the first letter of the folderName is uppercase
+  if (folderName[0] !== folderName[0].toLowerCase()) {
+    errorMessageConsole(`Error: The model name must start with a lowercase letter.`);
+    process.exit(1);
+  }
   // Path to the src/contexts folder
   const contextsFolderPath = path.join(__dirname, "src", "contexts");
   // Path to the folder to create
@@ -77,7 +92,7 @@ function createModule(folderName) {
 
   // Check if the folder already exists
   if (fs.existsSync(folderPath)) {
-    console.error(`The folder "${folderName}" already exists in src/contexts.`);
+    errorMessageConsole(`The folder "${folderName}" already exists in src/contexts.`);
     process.exit(1);
   }
 
@@ -350,11 +365,20 @@ export * from './i-${entityName}-repository'
    */
   let importRoute = `import { ${capitalizeFirstLetter(entityName)}ExternalDependencies } from '../contexts/${entityName}/infrastructure/${entityName}.injector'`;
   let externalDependencie = `${capitalizeFirstLetter(entityName)}ExternalDependencies`;
-  replaceExternalDependencies('./src/infrastructure/', externalDependencie, importRoute)
-  console.log(`Folder "${folderName}" created successfully in src/contexts.`);
-  console.log(`Folder "domains" and its subfolders created inside.`);
-  console.log(`Folder "infrastructure" and its subfolders created inside.`);
-  console.log(`Folder "use-cases" created inside.`);
+  replaceExternalDependencies('./src/infrastructure/', externalDependencie, importRoute);
+
+  /**
+   * Add new model to prisma
+   */
+  /**
+   * TODO:Multiple data base (current db:sqlite)
+   */
+  let prismaPath = './src/infrastructure/database/';
+  addPrismaModel(prismaPath, entityName);
+  succesMessageConsole(`Folder "${folderName}" created successfully in src/contexts.`);
+  succesMessageConsole(`Folder "domains" and its subfolders created inside.`);
+  succesMessageConsole(`Folder "infrastructure" and its subfolders created inside.`);
+  succesMessageConsole(`Folder "use-cases" created inside.`);
 }
 
 // Call the function to create the module

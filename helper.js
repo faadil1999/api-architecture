@@ -1,5 +1,11 @@
 const fs = require("fs");
 const path = require("path");
+
+// ANSI code for red color for errors and warnings
+const redColor = '\x1b[31m';  // Red for errors
+const greenColor = '\x1b[32m';  // Green for success
+const resetColor = '\x1b[0m';  // Reset to default color
+const yellowColor = '\x1b[33m'; // Yellow for warnings (used instead of orange)
 /**
  * Function to capitalize the first letter of a string
  * @param {string} element - The string to capitalize
@@ -93,9 +99,90 @@ function replaceExternalDependencies(directory, newValue, stringToAdd) {
   }
 }
 
+/**
+ * Function to add a model in the schema.prisma file
+ * 
+ * @param string prismaPath 
+ * @param string modelName 
+ * @returns 
+ */
+function addPrismaModel(prismaPath, modelName) {
+  // Construct the path to the Prisma file
+  const filePath = path.join(prismaPath, 'schema.prisma');
+  
+  // Check if the file exists
+  if (!fs.existsSync(filePath)) {
+    console.error(`The file ${filePath} does not exist.`);
+    return;
+  }
+
+  // Read the Prisma file content
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(`Error reading file: ${err}`);
+      return;
+    }
+    
+    // The model to add
+    const newModel = `
+model ${modelName} {
+  id    Int     @id @default(autoincrement())
+  // Add your fields here
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}\n`;
+
+    // Append the new model to the end of the file
+    const updatedData = data + newModel;
+
+    // Write the modified content back to the file
+    fs.writeFile(filePath, updatedData, 'utf8', (err) => {
+      if (err) {
+        console.error(`Error writing to file: ${err}`);
+        return;
+      }
+      console.log(`Model '${modelName}' added successfully to ${filePath}`);
+    });
+  });
+}
+
+
+/**
+ * Function for showing console SUCCESS
+ * 
+ * @param string message 
+ */
+function succesMessageConsole(message)
+{
+  console.log(`${greenColor}${message}${resetColor}`);
+}
+/**
+ * Function for showing console ERROR
+ * 
+ * @param string message 
+ */
+function errorMessageConsole(message)
+{
+  console.log(`${redColor}${message}${resetColor}`);
+}
+/**
+ * Function for showing console WARNING
+ * 
+ * @param string message 
+ */
+function warningMessageConsole(message)
+{
+  console.log(`${yellowColor}${message}${resetColor}`);
+}
+
+
 module.exports = {
   capitalizeFirstLetter,
   pluralWord,
   modifyIndexTs,
   replaceExternalDependencies,
+  addPrismaModel,
+  succesMessageConsole,
+  errorMessageConsole,
+  warningMessageConsole,
 };
