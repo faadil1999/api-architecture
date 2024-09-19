@@ -34,18 +34,60 @@ function pluralWord(word) {
 function modifyIndexTs(directory, exportStatement) {
   const filePath = path.join(directory, "index.ts");
 
-  // Vérifier si le fichier index.ts existe
+  // Verify if index.ts exist
   if (fs.existsSync(filePath)) {
-    // Lire le contenu existant du fichier
+    // Read the existing content of file
     const fileContent = fs.readFileSync(filePath, "utf-8");
 
-    // Ajouter la nouvelle ligne d'exportation au contenu existant
+    //Add the exportation new line to the existing content
     const newContent = `${fileContent}\n${exportStatement}`;
 
-    // Écrire le nouveau contenu dans le fichier
+    // Write the new content inside the file
     fs.writeFileSync(filePath, newContent, "utf-8");
 
     console.log(`Le fichier ${filePath} a été mis à jour avec succès.`);
+  } else {
+    console.log(`Le fichier ${filePath} n'existe pas.`);
+  }
+}
+/**
+ * This function is for adding the external dependencies inside the route.ts
+ *
+ * @param string directory
+ * @param string newValue
+ * @param string stringToAdd
+ * 
+ * @return void
+ * 
+ */
+function replaceExternalDependencies(directory, newValue, stringToAdd) {
+  const filePath = path.join(directory, 'routes.ts');
+  if (fs.existsSync(filePath)) {
+    console.log('inside replace external');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(`Erreur de lecture du fichier: ${err}`);
+        return;
+      }      
+      // Regular expression to find "ExternalDependencies = null"
+      const regexExternal = /ExternalDependencies\s*=\s*null/g;
+      // Replace with the new value
+      let result = data.replace(regexExternal, `ExternalDependencies = ${newValue}`);
+
+      // Regular expression to find "import { Config } from '../config';"
+      const regexImport = /import { Config } from ['"]\.\.\/config['"];(\r?\n)/;
+      // Add the new string just below the import
+      result = result.replace(regexImport, `import { Config } from '../config';$1${stringToAdd}$1`);
+
+      // Write the updated content to the file
+      fs.writeFile(filePath, result, 'utf8', (err) => {
+        if (err) {
+          console.error(`Error writing to file: ${err}`);
+          return;
+        }
+        console.log('Replacement successfully completed!');
+      });
+    });
   } else {
     console.log(`Le fichier ${filePath} n'existe pas.`);
   }
@@ -55,4 +97,5 @@ module.exports = {
   capitalizeFirstLetter,
   pluralWord,
   modifyIndexTs,
+  replaceExternalDependencies,
 };

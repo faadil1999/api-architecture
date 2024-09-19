@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { pluralWord, modifyIndexTs } = require("./helper.js");
+const { pluralWord, modifyIndexTs, replaceExternalDependencies, capitalizeFirstLetter } = require("./helper.js");
 const {
   generateMapperContent,
 } = require("./template/model-template/generate-mapper.js");
@@ -345,6 +345,12 @@ export * from './i-${entityName}-repository'
     `export * from './${entityName}'`
   );
 
+  /**
+   * Route external Dependencie
+   */
+  let importRoute = `import { ${capitalizeFirstLetter(entityName)}ExternalDependencies } from '../contexts/${entityName}/infrastructure/${entityName}.injector'`;
+  let externalDependencie = `${capitalizeFirstLetter(entityName)}ExternalDependencies`;
+  replaceExternalDependencies('./src/infrastructure/', externalDependencie, importRoute)
   console.log(`Folder "${folderName}" created successfully in src/contexts.`);
   console.log(`Folder "domains" and its subfolders created inside.`);
   console.log(`Folder "infrastructure" and its subfolders created inside.`);
