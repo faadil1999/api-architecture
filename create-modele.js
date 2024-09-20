@@ -363,9 +363,9 @@ export * from './i-${entityName}-repository'
   /**
    * Route external Dependencie
    */
-  let importRoute = `import { ${capitalizeFirstLetter(entityName)}ExternalDependencies } from '../contexts/${entityName}/infrastructure/${entityName}.injector'`;
+  let importRoute = `import { ${capitalizeFirstLetter(entityName)}ExternalDependencies, ${entityName}Injector } from '../contexts/${entityName}/infrastructure/${entityName}.injector'`;
   let externalDependencie = `${capitalizeFirstLetter(entityName)}ExternalDependencies`;
-  replaceExternalDependencies('./src/infrastructure/', externalDependencie, importRoute);
+  replaceExternalDependencies('./src/infrastructure/', externalDependencie, importRoute, entityName);
 
   /**
    * Add new model to prisma

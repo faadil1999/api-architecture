@@ -62,11 +62,12 @@ function modifyIndexTs(directory, exportStatement) {
  * @param string directory
  * @param string newValue
  * @param string stringToAdd
+ * @param string entityName
  * 
  * @return void
  * 
  */
-function replaceExternalDependencies(directory, newValue, stringToAdd) {
+function replaceExternalDependencies(directory, newValue, stringToAdd, entityName) {
   const filePath = path.join(directory, 'routes.ts');
   if (fs.existsSync(filePath)) {
     console.log('inside replace external');
@@ -84,6 +85,12 @@ function replaceExternalDependencies(directory, newValue, stringToAdd) {
       const regexImport = /import { Config } from ['"]\.\.\/config['"];(\r?\n)/;
       // Add the new string just below the import
       result = result.replace(regexImport, `import { Config } from '../config';$1${stringToAdd}$1`);
+
+      // Regular expression to find "return [" and add the new route to the array
+      const regexReturn = /return\s*\[\s*(\r?\n)/;
+      const newRoute = `Router().use('/${pluralWord(entityName)}', ${entityName}Injector(externalDependencies)),$1`;
+      result = result.replace(regexReturn, `return [
+    ${newRoute}`);
 
       // Write the updated content to the file
       fs.writeFile(filePath, result, 'utf8', (err) => {
@@ -125,8 +132,8 @@ function addPrismaModel(prismaPath, modelName) {
     
     // The model to add
     const newModel = `
-model ${modelName} {
-  id    Int     @id @default(autoincrement())
+model ${capitalizeFirstLetter(modelName)} {
+  id    String @id @default(uuid())
   // Add your fields here
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

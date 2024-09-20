@@ -41,7 +41,9 @@ const structure = {
     contexts: {},
     infrastructure: {
       database: {
-        repositories: {},
+        repositories: {
+          "index.ts":'',
+        },
         "database.ts": generateRelationalDatabaseTemplate("../../config"),
         "index.ts": `export * from './repositories';
         export * from "./database";`,

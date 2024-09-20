@@ -10,10 +10,6 @@ export type ExternalDependencies = null;
 export const getRoutes: GetRoutes = (externalDependencies: ExternalDependencies): Router[] => {
   // Main routes
   return [
-    // Add Route here
-    Router().get('/', (req, res) => {
-      res.send('Hello World!');
-    })
   ];
 };
 
