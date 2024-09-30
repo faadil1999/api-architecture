@@ -13,7 +13,13 @@ export class Delete${capitalizeFirstLetter(entityName)}UseCase {
     entityName
   )}Repository) {}
 
-    async execute(id: string): Promise<void> {
+    async execute(id: string): Promise<void | string> {
+        const ${entityName}Verif = await this.${entityName}Repository.get${capitalizeFirstLetter(
+    entityName
+  )}(id)
+        if (!${entityName}Verif) {
+          return \`No ${entityName} found with the ID: \${id}\`
+         }
         return this.${entityName}Repository.delete${capitalizeFirstLetter(
     entityName
   )}(id)

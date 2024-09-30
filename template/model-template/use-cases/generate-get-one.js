@@ -16,12 +16,12 @@ export class Get${capitalizeFirstLetter(
 
           async execute(id: string): Promise<${capitalizeFirstLetter(
             entityName
-          )}> {
+          )} | string> {
                 const ${entityName} = await this.${entityName}Repository.get${capitalizeFirstLetter(
     entityName
   )}(id)
                 if (!${entityName}) {
-                    throw new Error()
+                    return \`No ${entityName} found with the ID: \${id}\`
                 }
                 else{
                     return ${entityName}

@@ -9,7 +9,13 @@ function generateUpdateCase(entityName) {
   export class Update${entityNameCapitalized}UseCase {
     constructor(private ${entityName}Repository: I${entityNameCapitalized}Repository) {}
 
-    async execute(id: string, ${entityName}: Omit<${entityNameCapitalized}Update, 'id'>): Promise<${entityNameCapitalized}> {
+    async execute(id: string, ${entityName}: Omit<${entityNameCapitalized}Update, 'id'>): Promise<${entityNameCapitalized} | string> {
+        const ${entityName}Verif = await this.${entityName}Repository.get${capitalizeFirstLetter(
+    entityName
+  )}(id)
+        if (!${entityName}Verif) {
+          return \`No ${entityName} found with the ID: \${id}\`
+         }
         return this.${entityName}Repository.update${entityNameCapitalized}( {...${entityName}, id })
     }
   }
