@@ -8,7 +8,7 @@
     "f-create:model": "node create-modele.js",
     "f-db:generate": "prisma generate",
     "f-db:migrate": "prisma migrate dev",
-    "f-start": "nodemon -e js,ts -x ts-node src/main.ts"
+    "f-start": "cross-env PORT=$npm_config_port nodemon -e js,ts -x ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,7 @@
     "@types/convict-format-with-validator": "^6.0.2",
     "@types/express": "^4.17.17",
     "@types/node": "^18.15.3",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.21",
     "prisma": "^4.16.2",
     "sqlite3": "5.0.0",

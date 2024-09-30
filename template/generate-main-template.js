@@ -5,6 +5,11 @@ import { RelationalDatabase } from '${relationalDatabaseImportPath}';
 import { ExternalDependencies } from '${externalDependenciesImportPath}';
 import { Server } from '${serverImportPath}';
 
+const port = process.env.PORT || '3002'; // Default port 3002
+
+// Update port configuration
+config.server.port = parseInt(port, 10);
+
 (async () => {
   process.on('unhandledRejection', err => {
     console.log(err);

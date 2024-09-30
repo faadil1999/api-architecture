@@ -91,6 +91,20 @@ exec("npm install prisma --save-dev", (error, stdout, stderr) => {
   }
   console.log(`Output: ${stdout}`);
 });
+
+// Install cross_env as a development dependency
+exec("npm install cross-env --save-dev", (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Error installing cross-env: ${error.message}`);
+    return;
+  }
+  if (stderr) {
+    console.error(`Error: ${stderr}`);
+    return;
+  }
+  console.log(`Output: ${stdout}`);
+});
+
 const red = "\x1b[31m";
 const reset = "\x1b[0m";
 
